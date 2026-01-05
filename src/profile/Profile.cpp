@@ -173,6 +173,7 @@ const std::vector<Profile::PropertyInfo> Profile::DefaultProperties = {
     {AllowEscapedLinks, "AllowEscapedLinks", INTERACTION_GROUP, false},
     {EscapedLinksSchema, "EscapedLinksSchema", INTERACTION_GROUP, QLatin1String("http://;https://;file://")},
     {ColorFilterEnabled, "ColorFilterEnabled", INTERACTION_GROUP, true},
+    {InterruptIfNothingSelected, "InterruptIfNothingSelected", INTERACTION_GROUP, false},
 
     // Encoding
     {DefaultEncoding, "DefaultEncoding", ENCODING_GROUP, DEFAULT_ENCODING},

@@ -430,6 +430,9 @@ public:
         /** (int) Milliseconds interval between autosave activations
          */
         AutoSaveInterval,
+        /** (bool) If true, send an interrupt signal when copy shortcut is used with no selection
+         */
+        InterruptIfNothingSelected,
     };
 
     Q_ENUM(Property)
@@ -794,6 +797,11 @@ public:
     bool autoCopySelectedText() const
     {
         return property<bool>(Profile::AutoCopySelectedText);
+    }
+
+    bool interruptIfNothingSelected() const
+    {
+        return property<bool>(Profile::InterruptIfNothingSelected);
     }
 
     /** Convenience method for property<QString>(Profile::DefaultEncoding) */

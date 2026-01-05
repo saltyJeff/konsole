@@ -415,6 +415,7 @@ private:
     bool _monitorProcessFinish;
     bool _monitorOnce;
     EscapeSequenceUrlFilter *_escapedUrlFilter;
+    bool _interruptIfNothingSelected;
 
     std::unique_ptr<KXMLGUIBuilder> _clientBuilder;
 

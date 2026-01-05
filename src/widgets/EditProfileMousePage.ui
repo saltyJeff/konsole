@@ -230,6 +230,16 @@
            </property>
           </widget>
          </item>
+         <item row="12" column="1">
+          <widget class="QCheckBox" name="interruptIfNothingSelectedButton">
+           <property name="toolTip">
+            <string>Send a SIGINT signal if copy is triggered while nothing is selected.</string>
+           </property>
+           <property name="text">
+            <string>Interrupt if nothing selected</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>

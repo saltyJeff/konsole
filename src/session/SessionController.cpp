@@ -130,6 +130,7 @@ SessionController::SessionController(Session *sessionParam, TerminalDisplay *vie
     , _monitorProcessFinish(false)
     , _monitorOnce(false)
     , _escapedUrlFilter(nullptr)
+    , _interruptIfNothingSelected(false)
 {
     Q_ASSERT(sessionParam);
     Q_ASSERT(viewParam);
@@ -473,9 +474,12 @@ void SessionController::updateCopyAction(const bool selectionEmpty)
 {
     QAction *copyAction = actionCollection()->action(QStringLiteral("edit_copy"));
     QAction *copyContextMenu = actionCollection()->action(QStringLiteral("edit_copy_contextmenu"));
-    // copy action is meaningful only when some text is selected.
+
+    // copy action is meaningful only when some text is selected;
+    // or if the profile is configured to send interrupt on copy with no selection.
     bool hasRepl = view() && view()->screenWindow() && view()->screenWindow()->screen() && view()->screenWindow()->screen()->hasRepl();
-    copyAction->setEnabled(!selectionEmpty);
+    copyAction->setEnabled(_interruptIfNothingSelected || !selectionEmpty);
+
     copyContextMenu->setVisible(!selectionEmpty || hasRepl);
     QAction *Action = actionCollection()->action(QStringLiteral("edit_copy_contextmenu_in"));
     Action->setVisible(!selectionEmpty && hasRepl);
@@ -1233,6 +1237,10 @@ void SessionController::openBrowser()
 
 void SessionController::copy()
 {
+    if (_selectionEmpty && _interruptIfNothingSelected) {
+        session()->sendTextToTerminal(QChar(0x03), QChar());
+        return;
+    }
     view()->copyToClipboard();
 }
 
@@ -1496,6 +1504,9 @@ void SessionController::updateFilterList(const Profile::Ptr &profile)
         _colorFilter = new ColorFilter();
         filterChain->addFilter(_colorFilter);
     }
+
+    _interruptIfNothingSelected = profile->interruptIfNothingSelected();
+    updateCopyAction(_selectionEmpty);
 }
 
 void SessionController::setSearchStartToWindowCurrentLine()
